@@ -14,9 +14,9 @@ export class PropertyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	// console.log(this.property);
-    this.lines = this.property.clean_excerpt.split('\n');
-    // console.log(this.lines);
+  	if( undefined !== this.property.clean_excerpt ){
+      this.lines = this.property.clean_excerpt.split('\n');
+    }
   }
 
   onEdit(){
@@ -24,7 +24,9 @@ export class PropertyComponent implements OnInit {
   }
 
   onSave(){
-    this.lines = this.property.clean_excerpt.split('\n');
+    if( undefined !== this.property.clean_excerpt ){
+      this.lines = this.property.clean_excerpt.split('\n');
+    }
   	this.editing = false;
   }
 
