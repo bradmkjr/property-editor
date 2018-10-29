@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./property.component.scss']
 })
 export class PropertyComponent implements OnInit {
-  @Input() property: any[];
+  @Input() property: any;
 
   editing: boolean = false;
   lines: string[];
@@ -14,7 +14,7 @@ export class PropertyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	if( undefined !== this.property.clean_excerpt ){
+  	if( undefined !== this.property ){
       this.lines = this.property.clean_excerpt.split('\n');
     }
   }
@@ -24,7 +24,7 @@ export class PropertyComponent implements OnInit {
   }
 
   onSave(){
-    if( undefined !== this.property.clean_excerpt ){
+    if( undefined !== this.property ){
       this.lines = this.property.clean_excerpt.split('\n');
     }
   	this.editing = false;
