@@ -1,45 +1,39 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { User } from '../_models';
-import { UserService } from '../_services';
+import { Note } from '../_models';
+import { NoteService } from '../_services';
 
-import { Post } from '../_models';
-import { PostService } from '../_services';
-
-import { Agent } from '../_models';
-import { AgentService } from '../_services';
-
-
-
-@Component({templateUrl: 'home.component.html'})
+@Component({templateUrl: 'home.component.html', styleUrls: ['./home.component.scss']})
 export class HomeComponent implements OnInit {
-    users: User[] = [];
+notes: any[] = [];
+loading: boolean;
+more: boolean = true;
+offset: number = 0;
+perPage: number = 24;
 
-    posts: any[] = [];
+constructor(
+  private noteService: NoteService,
+) {}
 
-    agents: any[] = [];
+ngOnInit() {
+  this.loading = true;
+  this.noteService.getAll( this.offset,this.perPage ).pipe(first()).subscribe(notes => {
+    this.notes = notes;
+    this.loading = false;
+  });
+}
 
-    constructor(
-    	  private userService: UserService,
-    	  private postService: PostService,
-          private agentService: AgentService,
-    	) {}
+loadMore(){
+  this.loading = true;
+  this.offset = this.offset + this.perPage;
+  this.noteService.getAll( this.offset,this.perPage ).pipe(first()).subscribe(newNotes => {
+  	  if( newNotes.length < this.perPage){
+  	  	this.more = false;
+  	  }
+      this.notes = this.notes.concat( newNotes );
+      this.loading = false;
+  });
+}
 
-    ngOnInit() {
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            console.log(users);
-            this.users = users;
-        });
-
-        this.postService.getAll().pipe(first()).subscribe(posts => {
-        	console.log(posts);
-            this.posts = posts;
-        });
-
-        this.agentService.getAll().pipe(first()).subscribe(agents => {
-            console.log(agents);
-            this.agents = agents;
-        });
-    }
 }

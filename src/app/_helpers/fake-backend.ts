@@ -9,7 +9,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     constructor() { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let testUser = { id: 1, username: 'test@example.com', password: 'test', firstName: 'Test', lastName: 'User' };
+        const testUser = { id: 1, username: 'test@example.com', password: 'test', firstName: 'Test', lastName: 'User' };
 
         // wrap in delayed observable to simulate server api call
         return of(null).pipe(mergeMap(() => {
@@ -18,7 +18,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
                 if (request.body.username === testUser.username && request.body.password === testUser.password) {
                     // if login details are valid return 200 OK with a fake jwt token
-                    let body = {
+                    const body = {
                         id: testUser.id,
                         username: testUser.username,
                         firstName: testUser.firstName,
@@ -34,7 +34,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // get users
             if (request.url.endsWith('/users') && request.method === 'GET') {
-                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
+                // check for fake auth token in header and return users if valid, this security
+                // is implemented server side in a real application
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     return of(new HttpResponse({ status: 200, body: [testUser] }));
                 } else {
@@ -47,7 +48,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return next.handle(request);
         }))
 
-        // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
+        // call materialize and dematerialize to ensure delay even if an error is thrown
+        // (https://github.com/Reactive-Extensions/RxJS/issues/648)
         .pipe(materialize())
         .pipe(delay(500))
         .pipe(dematerialize());

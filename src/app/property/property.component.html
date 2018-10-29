@@ -1,0 +1,28 @@
+<mat-card class="example-card" >
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"
+    [ngStyle]="{ 'background-image': 'url(' + property.property_details.photos[0] + ')'}"></div>
+    <mat-card-title>{{property.property_details.name}}</mat-card-title>
+    <mat-card-subtitle>{{property.property_details.address}} {{property.property_details.city}}</mat-card-subtitle>
+  </mat-card-header>
+  <div mat-card-image [ngStyle]="{ 'background-image': 'url(' + property.property_details.photos[0] + ')'}"></div>
+  <mat-card-content>
+    <form class="example-form">
+      <ng-template [ngIf]="!editing">
+        <ul mat-list>
+          <li mat-list-item *ngFor="let line of lines">{{line}}</li>
+        </ul>
+      </ng-template>
+      <ng-template [ngIf]="editing">
+          <textarea matInput name="excerpt-{{property.id}}" [(ngModel)]="property.clean_excerpt" class="example-full-width"></textarea>
+        <input type="hidden" id="id-{{property.id}}" name="note-id" value="{{property.id}}">
+      </ng-template>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button *ngIf="!editing" (click)="onEdit()">EDIT</button>
+    <button mat-button *ngIf="editing" (click)="onSave()">SAVE</button>
+    <a mat-button *ngIf="!editing" href="https://tomsmithlandandhomes.com/property/{{ property.property_details.id | slice:0:7 }}/{{property.property_details.slug}}" target="_BLANK">VIEW</a>
+  </mat-card-actions>
+</mat-card>
+

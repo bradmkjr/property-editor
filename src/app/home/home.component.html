@@ -1,24 +1,7 @@
-﻿<h1>Home</h1>
-<p>You're logged in with Angular 6 & JWT!!</p>
-<div>
-    Posts from secure api end point:
-    <ul>
-        <li *ngFor="let post of posts">{{post.title.rendered}} {{post.date}}</li>
-    </ul>
-</div>
+﻿<app-loading *ngIf="loading"></app-loading>
 
-<div>
-    Users from secure api end point:
-    <ul>
-        <li *ngFor="let user of users"><img src="{{user.avatar_urls['24']}}" alt="{{user.name}} avatar" /> {{user.name}}</li>
-    </ul>
-</div>
+<ng-template ngFor let-note [ngForOf]="notes">
+  <app-property [property]=note ></app-property>
+</ng-template>
 
-<div>
-    Agents from secure api end point:
-    <ul>
-        <li *ngFor="let agent of agents">{{agent.title.rendered}}</li>
-    </ul>
-</div>
-
-<p><a mat-flat-button color="primary" [routerLink]="['/login']">Logout</a></p>
+<button mat-flat-button color="primary" (click)="loadMore()" *ngIf="more && !loading">Load More</button>

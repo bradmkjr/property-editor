@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialsModule } from './materials/materials.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingComponent } from './loading.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialsModule,
     FormsModule,
     ReactiveFormsModule,
+    LoadingComponent,
   ],
-  declarations: []
+  declarations: [LoadingComponent]
 })
 export class SharedModule { }
